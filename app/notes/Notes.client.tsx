@@ -13,7 +13,6 @@ import NoteForm from "@/components/NoteForm/NoteForm";
 import css from "./Notes.module.css";
 import type { Note } from "@/types/note";
 
-
 interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
@@ -28,7 +27,7 @@ export default function NotesClient() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1);
+      setPage(1); 
     }, 500);
 
     return () => clearTimeout(timer);
@@ -42,12 +41,12 @@ export default function NotesClient() {
         perPage: 12,
         search: debouncedSearch,
       }),
-    staleTime: 5000, 
+    placeholderData: { notes: [], totalPages: 0 },
     refetchOnWindowFocus: false,
   });
 
   const notes: Note[] = data?.notes ?? [];
-  const totalPages: number = data?.totalPages ?? 0;
+  const totalPages = data?.totalPages ?? 0;
 
   return (
     <div className={css.app}>
