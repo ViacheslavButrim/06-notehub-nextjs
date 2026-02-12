@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { fetchNotes } from "@/lib/api";
 
 import NoteList from "@/components/NoteList/NoteList";
@@ -27,7 +27,7 @@ export default function NotesClient() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); 
+      setPage(1);
     }, 500);
 
     return () => clearTimeout(timer);
@@ -41,7 +41,7 @@ export default function NotesClient() {
         perPage: 12,
         search: debouncedSearch,
       }),
-    placeholderData: { notes: [], totalPages: 0 },
+    placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
 
@@ -52,7 +52,10 @@ export default function NotesClient() {
     <div className={css.app}>
       <div className={css.toolbar}>
         <SearchBox onSearch={setSearch} />
-        <button className={css.button} onClick={() => setIsModalOpen(true)}>
+        <button
+          className={css.button}
+          onClick={() => setIsModalOpen(true)}
+        >
           Add note
         </button>
       </div>
